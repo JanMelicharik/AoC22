@@ -30,6 +30,21 @@ def fix_distance(head: tuple, tail: tuple) -> tuple:
     return tail
 
 
+def print_rope(rope: list[tuple], map_size: tuple[int, int]) -> None:
+    offset_x, offset_y = int(map_size[0] / 2), int(map_size[1] / 2)
+    rope_map = []
+    for _ in range(map_size[0]):
+        rope_map.append(["."] * map_size[1])
+
+    for index, knot in enumerate(rope):
+        rope_map[map_size[0] - (knot[1] + offset_x)][knot[0] + offset_y] = str(index)
+
+    for line in rope_map:
+        print("".join(line))
+
+    print("\n====================\n")
+
+
 def main():
     with open("input.txt", "r") as infile:
         moves = infile.read()
@@ -60,8 +75,6 @@ def main():
         for _ in range(int(distance)):
             rope_2[0] = move_knot(rope_2[0], change_in_coords)
             for knot_index in range(1, len(rope_2)):
-                if rope_2[knot_index] == rope_2[knot_index - 1]:
-                    break
                 rope_2[knot_index] = fix_distance(rope_2[knot_index - 1], rope_2[knot_index])
 
             tail_visited_2.append(rope_2[-1])
